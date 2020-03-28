@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.toughradius.mapper.BrasMapper">
+
+	<resultMap id="BaseResultMap" type="org.toughradius.entity.Bras">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="identifier" jdbcType="VARCHAR" property="identifier" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="ipaddr" jdbcType="VARCHAR" property="ipaddr" />
+		<result column="vendor_id" jdbcType="VARCHAR" property="vendorId" />
+		<result column="portal_vendor" jdbcType="VARCHAR" property="portalVendor" />
+		<result column="secret" jdbcType="VARCHAR" property="secret" />
+		<result column="coa_port" jdbcType="INTEGER" property="coaPort" />
+		<result column="ac_port" jdbcType="INTEGER" property="acPort" />
+		<result column="auth_limit" jdbcType="INTEGER" property="authLimit" />
+		<result column="acct_limit" jdbcType="INTEGER" property="acctLimit" />
+		<result column="status" jdbcType="CHAR" property="status" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" javaType="java.sql.Timestamp"/>
+	</resultMap>
+	
+	<cache  type="org.mybatis.caches.ehcache.EhcacheCache" readOnly="true"  >
+		<property name="maxElementsInMemory" value="10000"/>
+		<property name="eternal" value="false"/>
+		<property name="timeToIdleSeconds" value="60"/>
+		<property name="timeToLiveSeconds" value="60"/>
+		<property name="memoryStoreEvictionPolicy" value="LRU"/>
+		<property name="logging" value="true"/>
+		<property name="overflowToDisk" value="false"/>
+		<property name="diskPersistent" value="false"/>
+	</cache>
+
+	<sql id="Base_Column_List">
+		id, identifier, `name`, ipaddr, vendor_id, secret, coa_port,ac_port,portal_vendor,auth_limit,acct_limit, status,remark, create_time
+	</sql>
+
+	<select id="queryForList" parameterType="org.toughradius.entity.Bras" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from tr_bras
+		<where>
+			<if test="name != null  and name != '' "> and name = #{name}</if>
+			<if test="ipaddr != null  and ipaddr != '' "> and ipaddr = #{ipaddr}</if>
+			<if test="identifier != null  and identifier != '' "> and identifier = #{identifier}</if>
+			<if test="remark != null  and remark != '' "> and remark like CONCAT('%',#{remark},'%') </if>
+		</where>
+	</select>
+
+	<insert id="insertBras" parameterType="org.toughradius.entity.Bras" flushCache="true">
+		insert into tr_bras
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="name != null  and name != ''  ">name,</if>
+			<if test="identifier != null  and identifier != ''  ">identifier,</if>
+			<if test="ipaddr != null  and ipaddr != ''  ">ipaddr,</if>
+			<if test="vendorId != null  and vendorId != ''  ">vendor_id,</if>
+			<if test="portalVendor != null  and portalVendor != ''  ">portal_vendor,</if>
+			<if test="secret != null  and secret != ''  ">secret,</if>
+			<if test="coaPort != null  and coaPort != ''  ">coa_port,</if>
+			<if test="acPort != null  and acPort != ''  ">ac_port,</if>
+			<if test="authLimit != null  and authLimit != ''  ">auth_limit,</if>
+			<if test="acctLimit != null  and acctLimit != ''  ">acct_limit,</if>
+			<if test="status != null  and status != ''  ">status,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="createTime != null  ">create_time</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="name != null  and name != ''  ">#{name},</if>
+			<if test="identifier != null  and identifier != ''  ">#{identifier},</if>
+			<if test="ipaddr != null  and ipaddr != ''  ">#{ipaddr},</if>
+			<if test="vendorId != null  and vendorId != ''  ">#{vendorId},</if>
+			<if test="portalVendor != null  and portalVendor != ''  ">#{portalVendor},</if>
+			<if test="secret != null  and secret != ''  ">#{secret},</if>
+			<if test="coaPort != null  and coaPort != ''  ">#{coaPort},</if>
+			<if test="acPort != null  and acPort != ''  ">#{acPort},</if>
+			<if test="authLimit != null  and authLimit != ''  ">#{authLimit},</if>
+			<if test="acctLimit != null  and acctLimit != ''  ">#{acctLimit},</if>
+			<if test="status != null  and status != ''  ">#{status},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="createTime != null  ">#{createTime,jdbcType=TIMESTAMP}</if>
+		</trim>
+	</insert>
+
+	<select id="updateBras" parameterType="org.toughradius.entity.Bras" flushCache="true">
+		update tr_bras
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="name != null  and name != ''  ">name = #{name},</if>
+			<if test="identifier != null  and identifier != ''  ">identifier = #{identifier},</if>
+			<if test="ipaddr != null  and ipaddr != ''  ">ipaddr = #{ipaddr},</if>
+			<if test="vendorId != null  and vendorId != ''  ">vendor_id = #{vendorId},</if>
+			<if test="portalVendor != null  and portalVendor != ''  ">portal_vendor = #{portalVendor},</if>
+			<if test="secret != null  and secret != ''  ">secret = #{secret},</if>
+			<if test="coaPort != null  and coaPort != ''  ">coa_port = #{coaPort},</if>
+			<if test="acPort != null  and acPort != ''  ">ac_port = #{acPort},</if>
+			<if test="authLimit != null  and authLimit != ''  ">auth_limit = #{authLimit},</if>
+			<if test="acctLimit != null  and acctLimit != ''  ">acct_limit = #{acctLimit},</if>
+			<if test="status != null  ">status = #{status},</if>
+			<if test="remark != null ">remark = #{remark},</if>
+			<if test="createTime != null  ">create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+		</trim>
+		where id = #{id}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from tr_bras where id = #{id}
+	</delete>
+
+	<select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from tr_bras
+		where id=#{id}
+	</select>
+
+	<select id="findByIPAddr" parameterType="java.lang.String" resultMap="BaseResultMap" useCache="true">
+		select
+		<include refid="Base_Column_List" />
+		from tr_bras
+		where ipaddr = #{ipaddr} limit 1
+	</select>
+
+	<select id="findByidentifier" parameterType="java.lang.String" resultMap="BaseResultMap" useCache="true">
+		select
+		<include refid="Base_Column_List" />
+		from tr_bras
+		where identifier = #{identifier} limit 1
+	</select>
+
+
+	<update id="flushCache" flushCache="true" >
+		select 1;
+	</update>
+
+</mapper>
